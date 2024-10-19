@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Kontak</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Gaya umum untuk halaman */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        /* Header */
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .header button {
+            background-color: white;
+            color: #4CAF50;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            margin-right: 20px;
+        }
+
+        /* Pencarian Kontak */
+        .search-bar {
+            margin-top: 85px;
+            padding: 10px 20px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background-color: #f0f0f0;
+            font-size: 16px;
+        }
+
+        /* Daftar Kontak */
+        .contact-list {
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+            margin-top: 10px;
+        }
+
+        .contact-list h2 {
+            font-size: 18px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+
+        .contact-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .contact-item .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .contact-item .name {
+            flex: 1;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .contact-item .phone {
+            flex: 1;
+            color: #666;
+        }
+
+        .contact-item .actions {
+            display: flex;
+        }
+
+        .contact-item .actions button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 18px;
+            padding: 5px;
+        }
+
+        /* Formulir Tambah Kontak */
+        .add-contact-section {
+            display: none;
+            background-color: white;
+            padding: 20px;
+            border-top: 1px solid #f0f0f0;
+            position: fixed;
+            bottom: 60px;
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .add-contact-section input {
+            width: 45%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .add-contact-section button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .bottom-nav a {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .bottom-nav a i {
+            font-size: 24px;
+        }
+
+        .bottom-nav a.active {
+            color: #4CAF50;
+        }
+
+        /* Formulir Edit Kontak */
+        .edit-contact-section {
+            display: none;
+            background-color: white;
+            padding: 20px;
+            border-top: 1px solid #f0f0f0;
+            position: fixed;
+            bottom: 60px;
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .edit-contact-section input {
+            width: 45%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .edit-contact-section button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>Kontak</h1>
+        <button onclick="toggleAddContact()"><i class="fas fa-plus"></i></button>
+    </div>
+
+    <!-- Pencarian Kontak -->
+    <div class="search-bar">
+        <input type="text" id="cariNama" placeholder="Cari kontak" oninput="cariKontak()">
+    </div>
+
+    <!-- Daftar Kontak -->
+    <div class="contact-list" id="contactList">
+        <h2>Daftar Kontak</h2>
+    </div>
+
+    <!-- Formulir Tambah Kontak -->
+    <div class="add-contact-section" id="addContactSection">
+        <input type="text" id="namaKontak" placeholder="Nama kontak">
+        <input type="tel" id="nomorKontak" placeholder="Nomor telepon">
+        <button onclick="tambahKontak()">Tambah</button>
+    </div>
+
+    <!-- Formulir Edit Kontak -->
+    <div class="edit-contact-section" id="editContactSection">
+        <input type="text" id="editNamaKontak" placeholder="Nama kontak">
+        <input type="tel" id="editNomorKontak" placeholder="Nomor telepon">
+        <button onclick="simpanEdit()">Simpan</button>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <a href="index.html" class="active"><i class="fas fa-address-book"></i><br>Kontak</a>
+        <a href="favorit.html"><i class="fas fa-star"></i><br>Favorit</a> <!-- Tautan ke favorit.html -->
+        <a href="#"><i class="fas fa-cog"></i><br>Pengaturan</a>
+    </div>
+
+    <script>
+        let daftarKontak = [
+            {nama: "Mutiah", nomor: "08123456789"},
+            {nama: "Fahmi", nomor: "08198765432"},
+            {nama: "Divo", nomor: "08176543210"},
+            {nama: "Ayu", nomor: "08112345678"},
+            {nama: "Ziska", nomor: "08112345678"},
+            {nama: "Imelda", nomor: "08112345678"}
+        ];
+
+        let currentEditIndex = null; // Menyimpan indeks kontak yang sedang diedit
+
+        function tampilkanKontak(filteredKontak = daftarKontak) {
+            const contactListDiv = document.getElementById('contactList');
+            contactListDiv.innerHTML = '<h2>Daftar Kontak</h2>';
+            filteredKontak.forEach((kontak, index) => {
+                const contactItem = `
+                    <div class="contact-item">
+                        <div class="avatar">${kontak.nama.charAt(0)}</div>
+                        <div class="name">${kontak.nama}</div>
+                        <div class="phone">${kontak.nomor}</div>
+                        <div class="actions">
+                            <button onclick="toggleEditContact(${index})"><i class="fas fa-edit"></i></button>
+                            <button onclick="hapusKontak(${index})"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                `;
+                contactListDiv.innerHTML += contactItem;
+            });
+        }
+
+        function tambahKontak() {
+            const namaKontak = document.getElementById('namaKontak').value;
+            const nomorKontak = document.getElementById('nomorKontak').value;
+            if (namaKontak && nomorKontak) {
+                daftarKontak.push({nama: namaKontak, nomor: nomorKontak});
+                document.getElementById('namaKontak').value = '';
+                document.getElementById('nomorKontak').value = '';
+                toggleAddContact();
+                tampilkanKontak();
+            }
+        }
+
+        function cariKontak() {
+            const query = document.getElementById('cariNama').value.toLowerCase();
+            const filteredKontak = daftarKontak.filter(kontak => 
+                kontak.nama.toLowerCase().includes(query)
+            );
+            tampilkanKontak(filteredKontak);
+        }
+
+        function hapusKontak(index) {
+            daftarKontak.splice(index, 1);
+            tampilkanKontak();
+        }
+
+        function toggleAddContact() {
+            const addContactSection = document.getElementById('addContactSection');
+            addContactSection.style.display = addContactSection.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        function toggleEditContact(index) {
+            currentEditIndex = index; // Simpan indeks kontak yang diedit
+            const editContactSection = document.getElementById('editContactSection');
+            document.getElementById('editNamaKontak').value = daftarKontak[index].nama;
+            document.getElementById('editNomorKontak').value = daftarKontak[index].nomor;
+            editContactSection.style.display = 'flex';
+        }
+
+        function simpanEdit() {
+            if (currentEditIndex !== null) {
+                const editNama = document.getElementById('editNamaKontak').value;
+                const editNomor = document.getElementById('editNomorKontak').value;
+                if (editNama && editNomor) {
+                    daftarKontak[currentEditIndex] = {nama: editNama, nomor: editNomor};
+                    document.getElementById('editContactSection').style.display = 'none';
+                    currentEditIndex = null; // Reset indeks edit
+                    tampilkanKontak();
+                }
+            }
+        }
+
+        // Tampilkan daftar kontak saat halaman dimuat
+        tampilkanKontak();
+    </script>
+</body>
+</html>

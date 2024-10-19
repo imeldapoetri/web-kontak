@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Kontak</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* CSS Terintegrasi untuk Desain yang Modern */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e9ecef;
+        }
+
+        /* Header */
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .header button {
+            background-color: white;
+            color: #4CAF50;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .header button:hover {
+            background-color: #d4d4d4;
+            transform: scale(1.05);
+        }
+
+        /* Daftar Kontak */
+        .contact-list {
+            margin: 0;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .contact-list h2 {
+            font-size: 24px;
+            color: #343a40;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.3s;
+        }
+
+        .contact-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .contact-item .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .contact-item .name {
+            flex: 1;
+            font-size: 20px;
+            color: #343a40;
+        }
+
+        .contact-item .phone {
+            flex: 1;
+            color: #4CAF50;
+        }
+
+        .contact-item .actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-item .favorite {
+            color: gold;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .contact-item .favorite:hover {
+            transform: scale(1.2);
+        }
+
+        /* Formulir Tambah Kontak */
+        .add-contact-section {
+            display: none;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            bottom: 70px;
+            width: 90%;
+            margin: 0 auto;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .add-contact-section input {
+            width: 48%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-contact-section button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-contact-section button:hover {
+            background-color: #4CAF50;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .bottom-nav a {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .bottom-nav a i {
+            font-size: 24px;
+        }
+
+        .bottom-nav a.active {
+            color: #4CAF50;
+        }
+
+        .bottom-nav a:hover {
+            color: #343a40;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>Kontak</h1>
+        <button onclick="toggleAddContact()"><i class="fas fa-plus"></i></button>
+    </div>
+
+    <!-- Pencarian Kontak -->
+    <div class="search-bar">
+        <input type="text" id="cariNama" placeholder="Cari kontak" oninput="cariKontak()">
+    </div>
+
+    <!-- Daftar Kontak -->
+    <div class="contact-list" id="contactList">
+        <h2>Daftar Kontak</h2>
+        <!-- Kontak akan diisi dengan JavaScript -->
+    </div>
+
+    <!-- Formulir Tambah Kontak -->
+    <div class="add-contact-section" id="addContactSection">
+        <input type="text" id="namaKontak" placeholder="Nama kontak">
+        <input type="tel" id="nomorKontak" placeholder="Nomor telepon">
+        <button onclick="tambahKontak()">Tambah</button>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <a href="#" class="active" onclick="tampilkanKontak()"><i class="fas fa-address-book"></i><br>Kontak</a>
+        <a href="#" onclick="tampilkanFavorit()"><i class="fas fa-star"></i><br>Favorit</a>
+        <a href="#"><i class="fas fa-cog"></i><br>Pengaturan</a>
+    </div>
+
+    <script>
+        let daftarKontak = [
+            {nama: "Mutiah", nomor: "08123456789", favorit: false},
+            {nama: "Fahmi", nomor: "08198765432", favorit: false},
+            {nama: "Divo", nomor: "08176543210", favorit: false},
+            {nama: "Ayu", nomor: "08112345678", favorit: false},
+            {nama: "Ziska", nomor: "08112345678", favorit: false},
+            {nama: "Imelda", nomor: "08112345678", favorit: false}
+        ];
+
+        function tampilkanKontak(filteredKontak = daftarKontak) {
+            const contactListDiv = document.getElementById('contactList');
+            contactListDiv.innerHTML = '<h2>Daftar Kontak</h2>';
+            filteredKontak.forEach((kontak, index) => {
+                const favoriteIcon = kontak.favorit ? 
+                    `<i class="fas fa-star favorite" onclick="toggleFavorit(${index})"></i>` : 
+                    `<i class="far fa-star favorite" onclick="toggleFavorit(${index})"></i>`;
+                const contactItem = `
+                    <div class="contact-item">
+                        <div class="avatar">${kontak.nama.charAt(0)}</div>
+                        <div class="name">${kontak.nama}</div>
+                        <div class="phone">${kontak.nomor}</div>
+                        <div class="actions">
+                            ${favoriteIcon}
+                            <button onclick="hapusKontak(${index})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                contactListDiv.innerHTML += contactItem;
+            });
+        }
+
+        function tambahKontak() {
+            const nama = document.getElementById('namaKontak').value;
+            const nomor = document.getElementById('nomorKontak').value;
+            if (nama && nomor) {
+                daftarKontak.push({nama, nomor, favorit: false});
+                document.getElementById('namaKontak').value = '';
+                document.getElementById('nomorKontak').value = '';
+                tampilkanKontak();
+                toggleAddContact();
+            }
+        }
+
+        function hapusKontak(index) {
+            daftarKontak.splice(index, 1);
+            tampilkanKontak();
+        }
+
+        function cariKontak() {
+            const query = document.getElementById('cariNama').value.toLowerCase();
+            const filteredKontak = daftarKontak.filter(kontak => 
+                kontak.nama.toLowerCase().includes(query)
+            );
+            tampilkanKontak(filteredKontak);
+        }
+
+        function toggleFavorit(index) {
+            daftarKontak[index].favorit = !daftarKontak[index].favorit;
+            tampilkanKontak();
+        }
+
+        function toggleAddContact() {
+            const addContactSection = document.getElementById('addContactSection');
+            addContactSection.style.display = addContactSection.style.display === 'none' || addContactSection.style.display === '' ? 'block' : 'none';
+        }
+
+        // Menampilkan kontak saat halaman pertama kali dimuat
+        window.onload = function() {
+            tampilkanKontak();
+        };
+    </script>
+</body>
+</html>
